@@ -1,0 +1,57 @@
+<app-menu></app-menu>
+<div class='component-content'>
+    <div class = 'lefthalf'>
+        <span class='component-title'>[{{title}}] </span>
+        <span><a routerLink='/purchase-requests/list'>Back to List</a></span>
+    </div>
+</div>
+<p *ngIf='!request'>Loading...</p>
+<table class="table table-sm" *ngIf='request'>
+    <tr>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('id')"><u>Id</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('description')"><u>Description</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('status')"><u>Status</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('total')"><u>Total</u></a></th>
+    </tr>
+    <tr>
+      <td>{{request.id}}</td>
+      <td>{{request.description}}</td>
+      <td>{{request.status}}</td>
+      <td>{{request.total}}</td>
+    </tr>
+</table>
+<div class='component-content'>
+    <div class='lefthalf'>
+        <span class='component-title'>[{{subTitle}}]</span>
+        <span><a [routerLink]="['/purchase-request-line-items/create/',request.id]">
+            <img id='createnew' width='20' height='20' src='assets/add-icon.png' title='Add New'></a></span>
+    </div>
+</div>
+<p *ngIf='!prlis'>Loading...</p>
+<table class="table table-sm" *ngIf='prlis'>
+    <tr>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('id')"><u>Id</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('product')"><u>Product</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('quantity')"><u>Quantity</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('price')"><u>Price</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('total')"><u>Line Total</u></a></th>  
+      <th *ngIf="request.status === 'New' || request.status === 'Rejected'">Action</th>  
+    </tr>
+    <tr *ngIf="prlis.length==0" class="table-warning font-weight-bold">
+      <td colspan=6>No line items in purchase request</td>
+    </tr>
+  <tr *ngFor='let prli of prlis; let i=index'>
+    <td>{{prli.id}}</td>
+    <td>{{prli.product.name}}</td>
+    <td>{{prli.quantity}}</td>
+    <td>{{prli.product.price}}</td>
+    <td>{{prli.product.price * prli.quantity}}</td>
+    <td *ngIf="request.status === 'New' || request.status === 'Rejected'" class ='actions'>
+      <a routerLink='/purchase-request-line-items/edit/{{prli.id}}'><img src='assets/pencil-icon.png' width='20' height='20' title='Edit'></a>
+      <input type='image' src='assets/delete.jpg' width='20' height='20' title='Delete' (click)="remove(prli, i)"/>
+    </td>
+  </tr>
+  <tr>
+    <button *ngIf="prlis.length !==0 && (request.status === 'New' || request.status === 'Rejected')" (click)='submit()' class='btn btn-primary' title='Submit'>Submit for Review</button>
+  </tr>
+</table>

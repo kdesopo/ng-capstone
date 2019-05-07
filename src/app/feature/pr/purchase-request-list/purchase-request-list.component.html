@@ -1,0 +1,36 @@
+<app-menu></app-menu>
+<div class='component-content'>
+    <div class = 'lefthalf'>
+      <span class='component-title'>[{{title}}] </span>
+      <span><a routerLink='/purchase-requests/create'>
+            <img id='createnew' width='20' height='20' src='assets/add-icon.png' title='Add New'></a>
+      </span>
+    </div>
+  </div>
+  <p *ngIf='!requests'>Loading ...</p>
+  <table class="table table-sm" *ngIf='requests'>
+    <tr>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('id')"><u>Id</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('user')"><u>User</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('description')"><u>Description</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('dateNeeded')"><u>Date Needed</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('status')"><u>Status</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('total')"><u>Total</u></a></th>
+      <th class="table-secondary btn-link"><a class="btn btn-link font-weight-bold" (click)="sortBy('submittedDate')"><u>Submitted Date</u></a></th>
+      <th>Action</th>
+    </tr>
+    <tr *ngFor='let request of requests | sort:sortCriteria:sortOrder'>
+      <td *ngIf='request.user.userName === user.userName'>{{request.id}}</td>
+      <td *ngIf='request.user.userName === user.userName'>{{request.user.lastName}}, {{request.user.firstName}}</td>
+      <td *ngIf='request.user.userName === user.userName'>{{request.description}}</td>
+      <td *ngIf='request.user.userName === user.userName'>{{request.dateNeeded}}</td>
+      <td *ngIf='request.user.userName === user.userName'>{{request.status}}</td>
+      <td *ngIf='request.user.userName === user.userName'>{{request.total}}</td>
+      <td *ngIf='request.user.userName === user.userName'>{{request.submittedDate}}</td>
+      <td *ngIf='request.user.userName === user.userName' class='actions'>
+        <a routerLink = '/purchase-requests/detail/{{request.id}}'><img src='assets/details.png' width='20' height='20' title='Detail'></a>
+        <a routerLink = '/purchase-requests/edit/{{request.id}}'><img src='assets/pencil-icon.png' width='20' height='20' title='Edit'></a>
+        <a routerLink = '/purchase-requests/lines/{{request.id}}'><img src='assets/lines.png' width='20' height='20' title='Line Items'></a>     
+      </td>
+    </tr> 
+  </table>
